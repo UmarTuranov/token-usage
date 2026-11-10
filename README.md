@@ -9,7 +9,7 @@ The interface is in Russian. [Описание на русском ниже ↓]
 ## Run
 
 ```bash
-git clone https://github.com/<you>/token-usage.git
+git clone https://github.com/UmarTuranov/token-usage.git
 cd token-usage
 python3 server.py --open
 ```

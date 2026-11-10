@@ -491,6 +491,7 @@ function openSession(sid) {
       <div class="block"><div class="block-head"><h2>Инструменты</h2></div><div id="dr-tool"></div></div>
     </div>`;
   $("#drawer").classList.add("on"); $("#scrim").classList.add("on");
+  history.replaceState(null, "", "#s=" + sid);
   $("#dr-close").onclick = closeDrawer;
   const rr = () => openSession(sid);
   breakdown($("#dr-model"), group(rows, (m) => m.model), { id: "drm", title: "модель", label: shortModel, click: false, color: (k) => colorOf("model", k), rerender: rr });
@@ -532,7 +533,10 @@ function timeline(rows) {
   $("#dr-tl-legend").innerHTML = agents.map((a) => `<span><i style="background:${colorOf("agent", a)}"></i>${esc(a)}</span>`).join("") +
     `<span><i style="background:none;border-top:1.5px dashed var(--accent);height:0;border-radius:0;width:14px;vertical-align:3px"></i>накопительно</span>`;
 }
-function closeDrawer() { $("#drawer").classList.remove("on"); $("#scrim").classList.remove("on"); hideTip(); }
+function closeDrawer() {
+  $("#drawer").classList.remove("on"); $("#scrim").classList.remove("on"); hideTip();
+  if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+}
 
 /* ---------- wiring ---------- */
 function syncControls() {
@@ -576,6 +580,8 @@ async function load() {
     const r = await fetch("/api/data");
     prep(await r.json());
     render();
+    const m = location.hash.match(/^#s=([\w-]+)/);
+    if (m && SESS[m[1]]) openSession(m[1]);
   } catch (e) {
     $("#source").textContent = "Не удалось загрузить данные: " + e.message;
   } finally { btn.textContent = "Обновить"; btn.disabled = false; }

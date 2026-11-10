@@ -6,6 +6,13 @@ It reads the transcripts Claude Code already keeps in `~/.claude/projects/**/*.j
 
 The interface is in Russian. [Описание на русском ниже ↓](#по-русски)
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/overview-dark.png">
+  <img src="docs/overview-light.png" alt="Dashboard overview: totals, daily chart by model, token composition, breakdowns by model, agent, skill and project">
+</picture>
+
+<sub>Screenshots use generated demo data, see <a href="#demo-data">Demo data</a>.</sub>
+
 ## Run
 
 ```bash
@@ -36,6 +43,11 @@ The dashboard is served at http://127.0.0.1:8765. On macOS you can also double-c
 
 You can switch the main metric between all tokens, tokens excluding cache reads, output tokens and cost.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/session-dark.png">
+  <img src="docs/session-light.png" alt="Session detail: every request in order, subagent runs, breakdowns by model and agent">
+</picture>
+
 ## How it counts
 
 - **Requests.** Claude Code writes one model response as several log lines that share a `message.id`. Those lines are merged into one request.
@@ -43,6 +55,17 @@ You can switch the main metric between all tokens, tokens excluding cache reads,
 - **Skills.** A skill counts as active from the moment it is invoked (through the `Skill` tool or a slash command) until your next message.
 - **Tools.** A response's tokens are split equally between the tools it called.
 - **Cost** is an estimate based on [`prices.json`](prices.json), in USD per 1M tokens. Cache reads and writes are priced as multipliers of the input price. Edit the file to match your plan; on a subscription, the number shows what the same usage would cost through the API.
+
+## Demo data
+
+To try the dashboard without your own logs, or to take screenshots without exposing them:
+
+```bash
+python3 demo/generate.py
+CLAUDE_PROJECTS_DIR=demo/projects python3 server.py --open
+```
+
+The generator writes made-up projects, sessions, subagent runs and skill calls to `demo/projects`. It uses a fixed seed, so the output is the same every time, and the dates are relative to today.
 
 ## Privacy
 
@@ -58,6 +81,8 @@ server.py        transcript parser and HTTP server (stdlib only)
 public/          the page: index.html, app.js (aggregation, hand-written SVG charts), style.css
 prices.json      prices used for the cost estimate
 start.command    macOS launcher
+demo/generate.py demo transcript generator
+docs/            screenshots
 ```
 
 ## License
@@ -75,6 +100,8 @@ python3 server.py --open
 ```
 
 Дашборд откроется по адресу http://127.0.0.1:8765. На macOS можно просто дважды кликнуть `start.command`.
+
+Чтобы посмотреть дашборд на выдуманных данных: `python3 demo/generate.py`, затем `CLAUDE_PROJECTS_DIR=demo/projects python3 server.py --open`.
 
 - Клик по строке в таблицах моделей, агентов, скиллов или проектов ставит фильтр на весь дашборд.
 - Клик по сессии открывает её карточку: каждый запрос по порядку, запуски субагентов и разбивки.

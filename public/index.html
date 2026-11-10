@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Расход токенов</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-row">
+    <div class="brand">
+      <h1>Расход токенов</h1>
+      <span class="sub" id="source">Claude Code · загрузка…</span>
+    </div>
+    <button class="btn" id="reload" title="Перечитать логи">Обновить</button>
+  </div>
+  <div class="wrap filters">
+    <div class="seg" id="range">
+      <button data-v="1">24 ч</button>
+      <button data-v="7">7 дн</button>
+      <button data-v="30">30 дн</button>
+      <button data-v="90">90 дн</button>
+      <button data-v="0">Всё</button>
+    </div>
+    <label class="sel"><span>Проект</span><select id="f-project"></select></label>
+    <label class="sel"><span>Модель</span><select id="f-model"></select></label>
+    <label class="sel"><span>Агент</span><select id="f-agent"></select></label>
+    <label class="sel"><span>Скилл</span><select id="f-skill"></select></label>
+    <div class="seg metric" id="metric">
+      <button data-v="total" title="Вход + выход + запись и чтение кэша">Все токены</button>
+      <button data-v="fresh" title="Без чтения из кэша">Без кэша</button>
+      <button data-v="out">Выход</button>
+      <button data-v="cost" title="Оценка по prices.json">$</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="kpis" id="kpis"></section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>По дням</h2>
+      <div class="seg small" id="split">
+        <button data-v="model">модели</button>
+        <button data-v="kind">тип токенов</button>
+        <button data-v="agent">агенты</button>
+        <button data-v="project">проекты</button>
+      </div>
+    </div>
+    <div id="daily" class="chart"></div>
+    <div id="daily-legend" class="legend"></div>
+  </section>
+
+  <section class="block">
+    <div class="block-head"><h2>Из чего состоят токены</h2></div>
+    <div id="composition"></div>
+  </section>
+
+  <section class="grid2">
+    <div class="block"><div class="block-head"><h2>Модели</h2></div><div id="t-model"></div></div>
+    <div class="block"><div class="block-head"><h2>Агенты</h2><span class="hint">main — основной диалог</span></div><div id="t-agent"></div></div>
+    <div class="block"><div class="block-head"><h2>Скиллы</h2><span class="hint">ходы, в которых скилл был активен</span></div><div id="t-skill"></div></div>
+    <div class="block"><div class="block-head"><h2>Проекты</h2></div><div id="t-project"></div></div>
+    <div class="block"><div class="block-head"><h2>Инструменты</h2><span class="hint">токены ответа делятся между вызванными инструментами</span></div><div id="t-tool"></div></div>
+    <div class="block"><div class="block-head"><h2>Когда</h2><span class="hint">день недели × час, местное время</span></div><div id="heat" class="heat"></div></div>
+  </section>
+
+  <section class="block">
+    <div class="block-head">
+      <h2>Сессии <span class="count" id="s-count"></span></h2>
+      <input id="s-search" class="search" type="search" placeholder="Поиск по названию, запросу, проекту">
+    </div>
+    <div class="table-scroll"><table class="sessions" id="sessions"></table></div>
+  </section>
+
+  <footer class="foot">Данные читаются локально из <code id="src2"></code>. Стоимость — оценка по тарифам из <code>prices.json</code>.</footer>
+</main>
+
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-inner" id="drawer-body"></div>
+</aside>
+<div class="scrim" id="scrim"></div>
+<div class="tip" id="tip"></div>
+
+<script src="/app.js"></script>
+</body>
+</html>

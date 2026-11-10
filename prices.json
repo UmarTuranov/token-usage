@@ -1,0 +1,12 @@
+{
+  "_note": "USD за 1M токенов. Чтение кэша, запись кэша 5м и 1ч считаются множителями от input. Поправьте под свои тарифы — стоимость в дашборде пересчитается после перезагрузки страницы.",
+  "multipliers": { "cacheRead": 0.1, "cacheWrite5m": 1.25, "cacheWrite1h": 2.0 },
+  "models": {
+    "claude-opus-5-5":   { "input": 5,   "output": 25 },
+    "claude-opus-4-8":   { "input": 5,   "output": 25 },
+    "claude-sonnet-5-5": { "input": 2,   "output": 10 },
+    "claude-sonnet-5":   { "input": 3,   "output": 15 },
+    "claude-haiku-5-5":  { "input": 1,   "output": 5 },
+    "default":           { "input": 3,   "output": 15 }
+  }
+}
